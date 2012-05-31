@@ -1,0 +1,66 @@
+            Kalender
+
+Ein Open Source Kalender
+======================================
+
+I.   Voraussetzungen
+II.  Kalender kompilieren
+III. Kalender starten
+IV.  Teleshopping
+V.   Hilfe, Feedback & Bug Reports
+VI.  Über
+
+
+I.   Voraussetzungen
+======================================
+Das Programm ist in Java geschrieben. Es kann mit jedem Java
+Runtime Environment (JRE) Version 1.6.0 oder später gestartet
+werden.
+Das JRE (or JVM) kann hier heruntergeladen werden:
+http://java.sun.com/getjava/download.html
+
+
+II.  Trainer kompilieren
+======================================
+BEMERKUNG: Um das Programm zu starten ist dies nicht notwendig,
+da die kompilierten Dateien enthalten sind.
+
+Das Programm wurde mit Hilfe von Netbeans erstellt, somit kann
+es einfach importiert werden. Möchte man nicht mit Neatbeans arbeiten,
+so kann man die Java Dateien auch über die Kommandozeile kompilieren.
+Dazu öffnen Sie eine Kommandozeile und wechseln sie in das Verzeichnis
+src, von da aus kann einfach über javac kompilieren.
+Sollte es zu Fehlern kommen, prüfen Sie, ob der CLASSPATH in der
+Umgebungsvariable richtig gesetzt ist.
+
+Um den Kalender in Ihr eigenes Projekt zu integrieren, kopieren sie den
+Ordner kalender mit den class-Dateien in in Projekt Verzeichnis, dabei
+ist die Test.class nicht von Nöten. In der Java-Klasse, in der Sie den
+Kalender benutzen möchten, fügen Sie den Import import kalender.Kalender;
+hinzu.
+
+
+III. Trainer starten
+======================================
+Um sich ein Beispiel anzeigen zu lassen öffnen Sie eine Kommandozeile
+und wechseln sie in das Unterverzeichnis dist, in das Sie
+die Kalender_Source.tar.gz entpackt haben und führen sie den Befehl
+'java -jar Kalender.jar' aus.
+
+
+IV.  Troubleshooting
+======================================
+Für Hilfe und mehr Informationen senden Sie entweder eine Email an
+jnphilipp@yahoo.com oder schauen Sie auf http://jnphilipp.dyndns.org?p=trainer
+nach.
+
+V.   Hilfe, Feedback & Bug Reports
+======================================
+Für Hilfe, Feedback oder um Bugs zu melden, senden Sie eine Email an
+jnphilipp@yahoo.com.
+
+
+VI.  Über
+======================================
+Content is (C) 2011 J. Nathanael Philipp
+Website: http://jnphilipp.dyndns.org?p=trainer
