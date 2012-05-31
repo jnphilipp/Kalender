@@ -34,7 +34,11 @@ public enum Sprachen {
 	/**
 	 * Englisch
 	 */
-	en;
+	en,
+	/**
+	 * Finnisch
+	 */
+	fi;
 
 	/**
 	 * Gibt die Wochentage in der entsprechenden Sprache zur&uuml;ck.
@@ -47,6 +51,10 @@ public enum Sprachen {
 		}
 		else if ( this == en ) {
 			String[] wt = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
+			return wt;
+		}
+		else if ( this == fi ) {
+			String[] wt = {"ma", "ti", "ke", "to", "pe", "la", "su"};
 			return wt;
 		}
 
@@ -66,6 +74,10 @@ public enum Sprachen {
 			String[] m = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 			return m;
 		}
+		else if ( this == fi ) {
+			String[] m = {"tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"};
+			return m;
+		}
 
 		return null;
 	}
@@ -83,6 +95,10 @@ public enum Sprachen {
 			String[] m = {"calendar", "days"};
 			return m;
 		}
+		else if ( this == fi ) {
+			String[] m = {"kalenteri", "päivät"};
+			return m;
+		}
 
 		return null;
 	}
@@ -98,6 +114,10 @@ public enum Sprachen {
 		}
 		else if ( this == en ) {
 			String[] m = {"added", "removed"};
+			return m;
+		}
+		else if ( this == fi ) {
+			String[] m = {"	lisäsi", "poisti"};
 			return m;
 		}
 
