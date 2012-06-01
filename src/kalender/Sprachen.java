@@ -20,6 +20,7 @@
 package kalender;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Sprache f&uuml;r den <code>Kalender</code>.
@@ -131,5 +132,20 @@ public enum Sprachen {
 	 */
 	public boolean contains(String monat) {
 		return Arrays.asList(this.getMonate()).contains(monat);
+	}
+
+	/**
+	 * Wenn die Woche mit Montag beginnt wird <code>true</code> zurückgegeben, sonst <code>false</code>.
+	 * @return <code>true</code> wenn die Woche mit Montag beginnt.
+	 */
+	public boolean startWocheMitMontag() {
+		if ( this == de )
+			return true;
+		else if ( this == en )
+			return false;
+		else if ( this == fi )
+			return false;
+
+		return false;
 	}
 }

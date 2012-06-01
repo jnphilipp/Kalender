@@ -204,35 +204,45 @@ public class Kalender extends JPanel implements MouseListener, KeyListener {
 		panel.add(this.comp[1]);
 
 		//Wochentage
-		String[] wochentage = this.sprache.getWochentage();
-		this.comp[2] = new JLabel(wochentage[0]);
+		this.comp[2] = new JLabel("");
 		this.comp[2].setForeground(Color.WHITE);
 		((JLabel)this.comp[2]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[2]);
-		this.comp[3] = new JLabel(wochentage[1]);
+		this.comp[3] = new JLabel("");
 		this.comp[3].setForeground(Color.WHITE);
 		((JLabel)this.comp[3]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[3]);
-		this.comp[4] = new JLabel(wochentage[2]);
+		this.comp[4] = new JLabel("");
 		this.comp[4].setForeground(Color.WHITE);
 		((JLabel)this.comp[4]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[4]);
-		this.comp[5] = new JLabel(wochentage[3]);
+		this.comp[5] = new JLabel("");
 		this.comp[5].setForeground(Color.WHITE);
 		((JLabel)this.comp[5]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[5]);
-		this.comp[6] = new JLabel(wochentage[4]);
+		this.comp[6] = new JLabel("");
 		this.comp[6].setForeground(Color.WHITE);
 		((JLabel)this.comp[6]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[6]);
-		this.comp[7] = new JLabel(wochentage[5]);
+		this.comp[7] = new JLabel("");
 		this.comp[7].setForeground(Color.WHITE);
 		((JLabel)this.comp[7]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[7]);
-		this.comp[8] = new JLabel(wochentage[6]);
+		this.comp[8] = new JLabel("");
 		this.comp[8].setForeground(Color.WHITE);
 		((JLabel)this.comp[8]).setHorizontalAlignment(SwingConstants.CENTER);
 		((JPanel)this.comp[1]).add(this.comp[8]);
+
+		String[] wochentage = this.sprache.getWochentage();
+		for ( int i = 0; i < 7; i++ ) {
+			int j = 0;
+			if ( this.sprache.startWocheMitMontag() )
+				j = i;
+			else
+				j = (i + 6) % 7;
+
+			((JLabel)this.comp[i + 2]).setText(wochentage[j]);
+		}
 
 		//Tage
 		for ( int i = 0; i < this.days.length; i++ ) {
@@ -507,197 +517,61 @@ public class Kalender extends JPanel implements MouseListener, KeyListener {
 	}
 
 	/**
-	 * Setzt entsprechden dem ausgew&auml;hlten Monat die Tage, sodass die Wochentage passen. Sollte der Anfang und/oder Ende des Monats nicht auf den Anfang bzw. Ende der Woche fallen, so werden die Tage noch mit den entsprechenden Tagen des vorherigen bzw. n&auml;chsten Monats aufgef&uuml;llt.
+	 * Setzt entsprechden dem ausgew&auml;hlten Monat die Tage, sodass die Wochentage passen. Sollte der Anfang und/oder Ende des Monats nicht auf den Anfang bzw. Ende der Woche fallen, so werden die Tage noch mit den entsprechenden Tagen des vorherigen bzw. n&auml;chsten Monats aufgef&uuml;llt. Die Methode <code>Sprache.startWocheMitMontag()</code> gibt dabei an ob die Woche mit Montag oder mit Sonntag anfangen soll.
 	 */
 	private void tage() {
-		switch ( this.calendar.get(Calendar.DAY_OF_WEEK) ) {
-			case Calendar.MONDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.MARCH:
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.AUGUST:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						for ( int i = 0; i < 31; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i + 1));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 31; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 30));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 0; i < 29; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i + 1));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 29; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 28));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 0; i < 28; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i + 1));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 28; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 27));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						for ( int i = 0; i < 30; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i + 1));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 30; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 29));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
+		switch ( this.calendar.get(Calendar.MONTH) ) {
+			case Calendar.JANUARY:
+			case Calendar.MARCH:
+			case Calendar.MAY:
+			case Calendar.JULY:
+			case Calendar.AUGUST:
+			case Calendar.OCTOBER:
+			case Calendar.DECEMBER: {
+				if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 31; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i + 1));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 31; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 30));
+						this.days[i].setForeground(Color.GRAY);
+					}
 				}
-			} break;
-			case Calendar.TUESDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
 						((JLabel)this.days[0]).setText("31");
 						this.days[0].setForeground(Color.GRAY);
-						for ( int i = 1; i < 32; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 32; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 31));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-						((JLabel)this.days[0]).setText("31");
-						this.days[0].setForeground(Color.BLACK);
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 1; i < 30; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 30; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 29));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 1; i < 29; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 29; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 28));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
 						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 )
 							((JLabel)this.days[0]).setText("29");
 						else
 							((JLabel)this.days[0]).setText("28");
 
 						this.days[0].setForeground(Color.GRAY);
-
-						for ( int i = 1; i < 32; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 32; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 31));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("31");
-						this.days[0].setForeground(Color.GRAY);
-						for ( int i = 1; i < 31; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 31; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 30));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
+					}
+					else {
 						((JLabel)this.days[0]).setText("30");
 						this.days[0].setForeground(Color.GRAY);
-						for ( int i = 1; i < 32; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 32; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 31));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
+					}
+					for ( int i = 1; i < 32; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 32; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 31));
+						this.days[i].setForeground(Color.GRAY);
+					}
 				}
-			} break;
-			case Calendar.WEDNESDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
 						((JLabel)this.days[0]).setText("30");
 						this.days[0].setForeground(Color.GRAY);
 						((JLabel)this.days[1]).setText("31");
 						this.days[1].setForeground(Color.GRAY);
-						for ( int i = 2; i < 33; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 1));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 33; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 32));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-						((JLabel)this.days[0]).setText("30");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("31");
-						this.days[1].setForeground(Color.GRAY);
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 2; i < 31; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 1));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 31; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 30));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 2; i < 30; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 1));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 30; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 29));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
 						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
 							((JLabel)this.days[0]).setText("28");
 							((JLabel)this.days[1]).setText("29");
@@ -709,577 +583,442 @@ public class Kalender extends JPanel implements MouseListener, KeyListener {
 
 						this.days[0].setForeground(Color.GRAY);
 						this.days[1].setForeground(Color.GRAY);
+					}
+					else {
+						((JLabel)this.days[0]).setText("29");
+						this.days[0].setForeground(Color.GRAY);
+						((JLabel)this.days[1]).setText("30");
+						this.days[1].setForeground(Color.GRAY);
+					}
+					for ( int i = 2; i < 33; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 1));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 33; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 32));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
+						for ( int i = 0; i < 3; i++ ) {
+							((JLabel)this.days[i]).setText("" + (29 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
+						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+							for ( int i = 0; i < 3; i++ )
+							((JLabel)this.days[i]).setText("" + (27 + i));
+						}
+						else {
+							for ( int i = 0; i < 3; i++ )
+							((JLabel)this.days[i]).setText("" + (26 + i));
+						}
 
-						for ( int i = 2; i < 33; i++ ) {
+						for ( int i = 0; i < 3; i++ )
+							this.days[i].setForeground(Color.GRAY);
+					}
+					else {
+						for ( int i = 0; i < 3; i++ ) {
+							((JLabel)this.days[i]).setText("" + (28 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					for ( int i = 3; i < 34; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 34; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 33));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
+						for ( int i = 0; i < 4; i++ ) {
+							((JLabel)this.days[i]).setText("" + (28 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
+						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+							for ( int i = 0; i < 4; i++ )
+								((JLabel)this.days[i]).setText("" + (26 + i));
+						}
+						else {
+							for ( int i = 0; i < 4; i++ )
+								((JLabel)this.days[i]).setText("" + (25 + i));
+						}
+
+						for ( int i = 0; i < 4; i++ )
+							this.days[i].setForeground(Color.GRAY);
+					}
+					else {
+						for ( int i = 0; i < 4; i++ ) {
+							((JLabel)this.days[i]).setText("" + (27 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					for ( int i = 4; i < 35; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 3));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 35; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 34));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
+						for ( int i = 0; i < 5; i++ ) {
+							((JLabel)this.days[i]).setText("" + (27 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
+						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+							for ( int i = 0; i < 5; i++ )
+								((JLabel)this.days[i]).setText("" + (25 + i));
+						}
+						else {
+							for ( int i = 0; i < 5; i++ )
+								((JLabel)this.days[i]).setText("" + (24 + i));
+						}
+
+						for ( int i = 0; i < 5; i++ )
+							this.days[i].setForeground(Color.GRAY);
+					}
+					else {
+						for ( int i = 0; i < 5; i++ ) {
+							((JLabel)this.days[i]).setText("" + (26 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					for ( int i = 5; i < 36; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 4));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 36; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 35));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.MONTH) == Calendar.AUGUST || this.calendar.get(Calendar.MONTH) == Calendar.JANUARY ) {
+						for ( int i = 0; i < 6; i++ ) {
+							((JLabel)this.days[i]).setText("" + (26 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else if ( this.calendar.get(Calendar.MONTH) == Calendar.MARCH ) {
+						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+							for ( int i = 0; i < 6; i++ )
+								((JLabel)this.days[i]).setText("" + (24 + i));
+						}
+						else {
+							for ( int i = 0; i < 6; i++ )
+								((JLabel)this.days[i]).setText("" + (23 + i));
+						}
+
+						for ( int i = 0; i < 6; i++ )
+							this.days[i].setForeground(Color.GRAY);
+					}
+					else {
+						for ( int i = 0; i < 6; i++ ) {
+							((JLabel)this.days[i]).setText("" + (25 + i));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					for ( int i = 6; i < 37; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 5));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 37; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 36));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+			} break;
+			case Calendar.APRIL:
+			case Calendar.JUNE:
+			case Calendar.SEPTEMBER:
+			case Calendar.NOVEMBER: {
+				if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 30; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i + 1));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 30; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 29));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && !this.sprache.startWocheMitMontag()) ) {
+					((JLabel)this.days[0]).setText("31");
+					this.days[0].setForeground(Color.GRAY);
+					for ( int i = 1; i < 31; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 31; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 30));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 2; i++ ) {
+						((JLabel)this.days[i]).setText("" + (30 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+					for ( int i = 2; i < 32; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 1));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 32; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 31));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 3; i++ ) {
+						((JLabel)this.days[i]).setText("" + (29 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+					for ( int i = 3; i < 33; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 33; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 32));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 4; i++ ) {
+						((JLabel)this.days[i]).setText("" + (28 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+					for ( int i = 4; i < 34; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 3));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 34; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 33));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 5; i++ ) {
+						((JLabel)this.days[i]).setText("" + (27 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+					for ( int i = 5; i < 35; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 4));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 35; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 34));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 6; i++ ) {
+						((JLabel)this.days[i]).setText("" + (26  + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+					for ( int i = 6; i < 36; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 5));
+						this.days[i].setForeground(Color.BLACK);
+					}
+					for ( int i = 36; i < this.days.length; i++ ) {
+						((JLabel)this.days[i]).setText(String.valueOf(i - 35));
+						this.days[i].setForeground(Color.GRAY);
+					}
+				}
+			} break;
+			case Calendar.FEBRUARY: {
+				if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && !this.sprache.startWocheMitMontag()) ) {
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 0; i < 29; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i + 1));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 29; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 28));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else {
+						for ( int i = 0; i < 28; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i + 1));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 28; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 27));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && !this.sprache.startWocheMitMontag()) ) {
+					((JLabel)this.days[0]).setText("31");
+					this.days[0].setForeground(Color.GRAY);
+
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 1; i < 30; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 30; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 29));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else {
+						for ( int i = 1; i < 29; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 29; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 28));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 2; i++ ) {
+						((JLabel)this.days[i]).setText("" + (30 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 2; i < 31; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 1));
 							this.days[i].setForeground(Color.BLACK);
 						}
-						for ( int i = 33; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 32));
+						for ( int i = 31; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 30));
 							this.days[i].setForeground(Color.GRAY);
 						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("30");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("31");
-						this.days[1].setForeground(Color.GRAY);
-						for ( int i = 2; i < 32; i++ ) {
+					}
+					else {
+						for ( int i = 2; i < 30; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 1));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 30; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 29));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 3; i++ ) {
+						((JLabel)this.days[i]).setText("" + (29 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 3; i < 32; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
 							this.days[i].setForeground(Color.BLACK);
 						}
 						for ( int i = 32; i < this.days.length; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 31));
 							this.days[i].setForeground(Color.GRAY);
 						}
+					}
+					else {
+						for ( int i = 3; i < 31; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 31; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 30));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 4; i++ ) {
+						((JLabel)this.days[i]).setText("" + (28 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
 
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						((JLabel)this.days[0]).setText("29");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("30");
-						this.days[1].setForeground(Color.GRAY);
-						for ( int i = 2; i < 33; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 1));
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 4; i < 33; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 3));
 							this.days[i].setForeground(Color.BLACK);
 						}
 						for ( int i = 33; i < this.days.length; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 32));
 							this.days[i].setForeground(Color.GRAY);
 						}
-					} break;
+					}
+					else {
+						for ( int i = 4; i < 32; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 3));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 32; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 31));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
 				}
-			} break;
-			case Calendar.THURSDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
-						((JLabel)this.days[0]).setText("29");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("30");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("31");
-						this.days[2].setForeground(Color.GRAY);
-						for ( int i = 3; i < 34; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 5; i++ ) {
+						((JLabel)this.days[i]).setText("" + (27 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 5; i < 34; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 4));
 							this.days[i].setForeground(Color.BLACK);
 						}
 						for ( int i = 34; i < this.days.length; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 33));
 							this.days[i].setForeground(Color.GRAY);
 						}
-					} break;
-					case Calendar.FEBRUARY: {
-						((JLabel)this.days[0]).setText("29");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("30");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("31");
-						this.days[2].setForeground(Color.GRAY);
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 3; i < 32; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 2));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 32; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 31));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 3; i < 31; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 2));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 31; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 30));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							((JLabel)this.days[0]).setText("27");
-							((JLabel)this.days[1]).setText("28");
-							((JLabel)this.days[2]).setText("29");
-						}
-						else {
-							((JLabel)this.days[0]).setText("26");
-							((JLabel)this.days[1]).setText("27");
-							((JLabel)this.days[2]).setText("28");
-						}
-
-						this.days[0].setForeground(Color.GRAY);
-						this.days[1].setForeground(Color.GRAY);
-						this.days[2].setForeground(Color.GRAY);
-
-						for ( int i = 3; i < 34; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 34; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 33));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("29");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("30");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("31");
-						this.days[2].setForeground(Color.GRAY);
-						for ( int i = 3; i < 33; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+					}
+					else {
+						for ( int i = 5; i < 33; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 4));
 							this.days[i].setForeground(Color.BLACK);
 						}
 						for ( int i = 33; i < this.days.length; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 32));
 							this.days[i].setForeground(Color.GRAY);
 						}
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						((JLabel)this.days[0]).setText("28");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("29");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("30");
-						this.days[2].setForeground(Color.GRAY);
-						for ( int i = 3; i < 34; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 2));
+					}
+				}
+				else if ( (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && this.sprache.startWocheMitMontag()) || (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && !this.sprache.startWocheMitMontag()) ) {
+					for ( int i = 0; i < 6; i++ ) {
+						((JLabel)this.days[i]).setText("" + (26 + i));
+						this.days[i].setForeground(Color.GRAY);
+					}
+
+					if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
+						for ( int i = 6; i < 35; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 5));
+							this.days[i].setForeground(Color.BLACK);
+						}
+						for ( int i = 35; i < this.days.length; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 34));
+							this.days[i].setForeground(Color.GRAY);
+						}
+					}
+					else {
+						for ( int i = 6; i < 34; i++ ) {
+							((JLabel)this.days[i]).setText(String.valueOf(i - 5));
 							this.days[i].setForeground(Color.BLACK);
 						}
 						for ( int i = 34; i < this.days.length; i++ ) {
 							((JLabel)this.days[i]).setText(String.valueOf(i - 33));
 							this.days[i].setForeground(Color.GRAY);
 						}
-					} break;
-				}
-			} break;
-			case Calendar.FRIDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
-						((JLabel)this.days[0]).setText("28");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("29");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("30");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("31");
-						this.days[3].setForeground(Color.GRAY);
-						for ( int i = 4; i < 35; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 3));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 35; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 34));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-						((JLabel)this.days[0]).setText("28");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("29");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("30");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("31");
-						this.days[3].setForeground(Color.GRAY);
-
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 4; i < 33; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 3));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 33; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 32));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 4; i < 32; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 3));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 32; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 31));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							((JLabel)this.days[0]).setText("26");
-							((JLabel)this.days[1]).setText("27");
-							((JLabel)this.days[2]).setText("28");
-							((JLabel)this.days[3]).setText("29");
-						}
-						else {
-							((JLabel)this.days[0]).setText("25");
-							((JLabel)this.days[1]).setText("26");
-							((JLabel)this.days[2]).setText("27");
-							((JLabel)this.days[3]).setText("28");
-						}
-
-						this.days[0].setForeground(Color.GRAY);
-						this.days[1].setForeground(Color.GRAY);
-						this.days[2].setForeground(Color.GRAY);
-						this.days[3].setForeground(Color.GRAY);
-
-						for ( int i = 4; i < 35; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 3));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 35; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 34));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("28");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("29");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("30");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("31");
-						this.days[3].setForeground(Color.GRAY);
-
-						for ( int i = 4; i < 34; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 3));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 34; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 33));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						((JLabel)this.days[0]).setText("27");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("28");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("29");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("30");
-						this.days[3].setForeground(Color.GRAY);
-
-						for ( int i = 4; i < 35; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i-3));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 35; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 34));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-				}
-			} break;
-			case Calendar.SATURDAY: {
-				switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
-						((JLabel)this.days[0]).setText("27");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("28");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("39");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("30");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("31");
-						this.days[4].setForeground(Color.GRAY);
-
-						for ( int i = 5; i < 36; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 4));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 36; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 35));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-
-						((JLabel)this.days[0]).setText("27");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("28");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("29");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("30");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("31");
-						this.days[4].setForeground(Color.GRAY);
-
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 5; i < 34; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 4));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 34; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 33));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 5; i < 33; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 4));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 33; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 32));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
-if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							((JLabel)this.days[0]).setText("25");
-							((JLabel)this.days[1]).setText("26");
-							((JLabel)this.days[2]).setText("27");
-							((JLabel)this.days[3]).setText("28");
-							((JLabel)this.days[4]).setText("29");
-						}
-						else {
-							((JLabel)this.days[0]).setText("24");
-							((JLabel)this.days[1]).setText("25");
-							((JLabel)this.days[2]).setText("26");
-							((JLabel)this.days[3]).setText("27");
-							((JLabel)this.days[4]).setText("28");
-						}
-
-						this.days[0].setForeground(Color.GRAY);
-						this.days[1].setForeground(Color.GRAY);
-						this.days[2].setForeground(Color.GRAY);
-						this.days[3].setForeground(Color.GRAY);
-						this.days[4].setForeground(Color.GRAY);
-
-						for ( int i = 5; i < 36; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 4));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 36; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 35));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("27");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("28");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("39");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("30");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("31");
-						this.days[4].setForeground(Color.GRAY);
-
-						for ( int i = 5; i < 35; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i-4));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 35; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 34));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						((JLabel)this.days[0]).setText("26");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("27");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("28");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("29");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("30");
-						this.days[4].setForeground(Color.GRAY);
-
-						for ( int i = 5; i < 36; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i-4));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 36; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 35));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-				}
-			} break;
-			case Calendar.SUNDAY: {
-					switch ( this.calendar.get(Calendar.MONTH) ) {
-					case Calendar.JANUARY:
-					case Calendar.AUGUST: {
-						((JLabel)this.days[0]).setText("26");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("27");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("28");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("29");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("30");
-						this.days[4].setForeground(Color.GRAY);
-						((JLabel)this.days[5]).setText("31");
-						this.days[5].setForeground(Color.GRAY);
-
-						for ( int i = 6; i < 37; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 5));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 37; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 36));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.FEBRUARY: {
-						((JLabel)this.days[0]).setText("26");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("27");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("28");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("29");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("30");
-						this.days[4].setForeground(Color.GRAY);
-						((JLabel)this.days[5]).setText("31");
-						this.days[5].setForeground(Color.GRAY);
-
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							for ( int i = 6; i < 35; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 5));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 35; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 34));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-						else {
-							for ( int i = 6; i < 34; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 5));
-								this.days[i].setForeground(Color.BLACK);
-							}
-							for ( int i = 34; i < this.days.length; i++ ) {
-								((JLabel)this.days[i]).setText(String.valueOf(i - 33));
-								this.days[i].setForeground(Color.GRAY);
-							}
-						}
-					} break;
-					case Calendar.MARCH: {
-						if ( this.calendar.get(Calendar.YEAR) % 400 == 0 || this.calendar.get(Calendar.YEAR) % 4 == 0 && this.calendar.get(Calendar.YEAR) % 100 != 0 ) {
-							((JLabel)this.days[0]).setText("24");
-							((JLabel)this.days[1]).setText("25");
-							((JLabel)this.days[2]).setText("26");
-							((JLabel)this.days[3]).setText("27");
-							((JLabel)this.days[4]).setText("28");
-							((JLabel)this.days[5]).setText("29");
-						}
-						else {
-							((JLabel)this.days[0]).setText("23");
-							((JLabel)this.days[1]).setText("24");
-							((JLabel)this.days[2]).setText("25");
-							((JLabel)this.days[3]).setText("26");
-							((JLabel)this.days[4]).setText("27");
-							((JLabel)this.days[5]).setText("28");
-						}
-
-						this.days[0].setForeground(Color.GRAY);
-						this.days[1].setForeground(Color.GRAY);
-						this.days[2].setForeground(Color.GRAY);
-						this.days[3].setForeground(Color.GRAY);
-						this.days[4].setForeground(Color.GRAY);
-						this.days[5].setForeground(Color.GRAY);
-
-						for ( int i = 6; i < 37; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 5));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 37; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 36));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.APRIL:
-					case Calendar.JUNE:
-					case Calendar.SEPTEMBER:
-					case Calendar.NOVEMBER: {
-						((JLabel)this.days[0]).setText("26");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("27");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("28");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("39");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("30");
-						this.days[4].setForeground(Color.GRAY);
-						((JLabel)this.days[5]).setText("31");
-						this.days[5].setForeground(Color.GRAY);
-
-						for ( int i = 6; i < 36; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i-5));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 36; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 35));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
-					case Calendar.MAY:
-					case Calendar.JULY:
-					case Calendar.OCTOBER:
-					case Calendar.DECEMBER: {
-						((JLabel)this.days[0]).setText("25");
-						this.days[0].setForeground(Color.GRAY);
-						((JLabel)this.days[1]).setText("26");
-						this.days[1].setForeground(Color.GRAY);
-						((JLabel)this.days[2]).setText("27");
-						this.days[2].setForeground(Color.GRAY);
-						((JLabel)this.days[3]).setText("28");
-						this.days[3].setForeground(Color.GRAY);
-						((JLabel)this.days[4]).setText("29");
-						this.days[4].setForeground(Color.GRAY);
-						((JLabel)this.days[5]).setText("30");
-						this.days[5].setForeground(Color.GRAY);
-
-						for ( int i = 6; i < 37; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 5));
-							this.days[i].setForeground(Color.BLACK);
-						}
-						for ( int i = 37; i < this.days.length; i++ ) {
-							((JLabel)this.days[i]).setText(String.valueOf(i - 36));
-							this.days[i].setForeground(Color.GRAY);
-						}
-					} break;
+					}
 				}
 			} break;
 		}

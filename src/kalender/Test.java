@@ -60,7 +60,7 @@ public class Test extends JFrame implements ActionListener {
 		this.jmd.add(this.jmib);
 		this.setJMenuBar(this.jmb);
 		
-		this.k = new Kalender(Sprachen.de, true);
+		this.k = new Kalender(Sprachen.en, true);
 		this.add(this.k);
 
 		this.setVisible(true);
